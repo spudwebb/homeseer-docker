@@ -1,7 +1,7 @@
 #########################################
 # HOMESEER (V4) LINUX - DOCKERFILE
 #########################################
-FROM homeseer/base:latest
+FROM spudwebb/homeseer-base:latest
 ARG TARGETARCH
 ARG BUILDDATE
 ARG VERSION
@@ -11,11 +11,11 @@ ARG DEBIAN_FRONTEND=noninteractive
 # docker container image labels
 LABEL org.label-schema.schema-version="1.0"
 LABEL org.label-schema.build-date=$BUILDDATE
-LABEL org.label-schema.name="homeseer/homeseer"
+LABEL org.label-schema.name="spudwebb/homeseer"
 LABEL org.label-schema.description="HomeSeer Docker Image"
-LABEL org.label-schema.url="https://homseer.sh/"
-LABEL org.label-schema.vcs-url="https://github.com/HomeSeerLinux/docker"
-LABEL org.label-schema.vendor="Homeseer.sh"
+LABEL org.label-schema.url="https://homeseer.com/"
+LABEL org.label-schema.vcs-url="https://github.com/spudwebb/homeseer-docker"
+LABEL org.label-schema.vendor="HomeSeer Technologies"
 LABEL org.label-schema.version=$VERSION
 
 RUN echo "========================================================="

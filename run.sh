@@ -16,7 +16,7 @@ docker run \
        --env TZ=America/New_York \
        --env LANG=en_US.UTF-8 \
        --env HOMESEER_CREDENTIALS="default:default" \
-       homeseer/homeseer:latest $@
+       spudwebb/homeseer:latest $@
 
 # PUBLISHED IP PORTS
 # -------------------------

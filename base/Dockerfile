@@ -21,16 +21,20 @@ ENV HOMESEER_CREDENTAILS ""
 # docker container image labels
 LABEL org.label-schema.schema-version="1.0"
 LABEL org.label-schema.build-date=$BUILDDATE
-LABEL org.label-schema.name="homeseer/base"
+LABEL org.label-schema.name="spudwebb/homeseer-base"
 LABEL org.label-schema.description="HomeSeer Base Docker Image"
-LABEL org.label-schema.url="https://homseer.sh/"
-LABEL org.label-schema.vcs-url="https://github.com/HomeSeerLinux/docker"
-LABEL org.label-schema.vendor="Homeseer.sh"
+LABEL org.label-schema.url="https://homeseer.com/"
+LABEL org.label-schema.vcs-url="https://github.com/spudwebb/homeseer-docker"
+LABEL org.label-schema.vendor="HomeSeer Technologies"
 LABEL org.label-schema.version=$VERSION
 
 RUN echo "=========================================================" && \
     echo "  BUILDING DOCKER HOMESEER BASE ($VERSION) IMAGE FOR: $TARGETARCH" && \
     echo "========================================================="
+	
+# Replace sudo with a passthrough wrapper
+RUN echo '#!/bin/sh\nexec "$@"' > /usr/bin/sudo && \
+    chmod +x /usr/bin/sudo
 
 # make sure APT packages are up to date
 RUN apt-get update && apt-get upgrade --yes
