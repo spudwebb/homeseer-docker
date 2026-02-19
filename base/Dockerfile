@@ -13,10 +13,10 @@ ARG DEBIAN_FRONTEND=noninteractive
 STOPSIGNAL SIGQUIT
 
 # environment variables
-ENV LANG en_US.UTF-8
-ENV TZ "America/New_York"
-ENV HOMESEER_FOLDER "/homeseer"
-ENV HOMESEER_CREDENTAILS ""
+ENV LANG=en_US.UTF-8
+ENV TZ="America/New_York"
+ENV HOMESEER_FOLDER="/homeseer"
+ENV HOMESEER_CREDENTAILS=""
 
 # docker container image labels
 LABEL org.label-schema.schema-version="1.0"
@@ -35,6 +35,12 @@ RUN echo "=========================================================" && \
 # Replace sudo with a passthrough wrapper
 RUN echo '#!/bin/sh\nexec "$@"' > /usr/bin/sudo && \
     chmod +x /usr/bin/sudo
+	
+# Fix Debian Buster EOL repo issues- .186 of mono
+RUN sed -i 's/deb.debian.org/archive.debian.org/g' /etc/apt/sources.list && \
+    sed -i 's|security.debian.org|archive.debian.org/debian-security|g' /etc/apt/sources.list && \
+    sed -i '/stretch-updates/d' /etc/apt/sources.list && \
+    sed -i '/buster-updates/d' /etc/apt/sources.list
 
 # make sure APT packages are up to date
 RUN apt-get update && apt-get upgrade --yes
@@ -49,7 +55,19 @@ RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
     update-locale LANG=en_US.UTF-8
 
 # install container tools
-RUN apt-get install --yes tmux curl wget nano apt-utils net-tools iputils-ping etherwake ssh-client mosquitto-clients dos2unix
+RUN apt-get install --yes tmux curl wget nano apt-utils net-tools iputils-ping etherwake ssh-client mosquitto-clients dos2unix ca-certificates gnupg
+
+# install docker-ce-cli
+RUN install -m 0755 -d /etc/apt/keyrings && \
+    curl -fsSL https://download.docker.com/linux/debian/gpg \
+      | gpg --dearmor -o /etc/apt/keyrings/docker.gpg && \
+    echo \
+      "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] \
+      https://download.docker.com/linux/debian \
+      buster stable" \
+      > /etc/apt/sources.list.d/docker.list
+
+RUN apt-get update && apt-get install -y docker-ce-cli
 
 # install HomeSeer dependencies
 # alsa-base (not available in Debian upstream)

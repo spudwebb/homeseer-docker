@@ -183,8 +183,7 @@ function start_homeseer {
 # -------------------------------------------------------------------------
 # STOP HOMESEER
 # -------------------------------------------------------------------------
-# stop homeseer now; the mono process has already exited we just need
-# to stop any other daemons/processes and perform any cleanup
+# stop homeseer now; 
 # -------------------------------------------------------------------------
 function stop_homeseer {
 

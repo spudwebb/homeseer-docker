@@ -5,7 +5,7 @@
 ############################################
 
 # default mode
-MODE="load"
+MODE="push"
 
 # parse command line argument --mode
 while [[ $# -gt 0 ]]; do
@@ -38,7 +38,9 @@ build () {
       PLATFORM="linux/amd64"
       OUTPUT="--load"
   elif [ "$MODE" == "push" ]; then
-      PLATFORM="linux/amd64,linux/arm64"
+      #for now we don't build on arm64
+      #PLATFORM="linux/amd64,linux/arm64"
+	  PLATFORM="linux/amd64"
       OUTPUT="--push"
   else
       echo "Invalid mode: $MODE. Use 'load' or 'push'."
