@@ -8,9 +8,9 @@ docker run \
        --tty \
        --name homeseer \
        --volume /usr/local/homeseer:/homeseer \
-	   --volume /var/run/docker.sock:/var/run/docker.sock \
+       --volume /var/run/docker.sock:/var/run/docker.sock \
        --publish 80:80 \
-	   --publish 1883:1883 \
+       --publish 1883:1883 \
        --publish 10200:10200 \
        --publish 10300:10300 \
        --publish 10401:10401 \
@@ -18,7 +18,7 @@ docker run \
        --env TZ=America/New_York \
        --env LANG=en_US.UTF-8 \
        --env HOMESEER_CREDENTIALS="default:default" \
-	   --env DOCKER_HOMESEER_HOST_ROOT="/usr/local/homeseer" \
+       --env DOCKER_HOMESEER_HOST_ROOT="/usr/local/homeseer" \
        spudwebb/homeseer:latest $@
 
 # PUBLISHED IP PORTS

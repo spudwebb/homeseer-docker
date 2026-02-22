@@ -39,8 +39,7 @@ build () {
       OUTPUT="--load"
   elif [ "$MODE" == "push" ]; then
       #for now we don't build on arm64
-      #PLATFORM="linux/amd64,linux/arm64"
-	  PLATFORM="linux/amd64"
+      PLATFORM="linux/amd64,linux/arm64"
       OUTPUT="--push"
   else
       echo "Invalid mode: $MODE. Use 'load' or 'push'."
