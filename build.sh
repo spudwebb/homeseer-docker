@@ -62,7 +62,7 @@ build () {
 }
 
 # latest beta build
-build "4.2.22.94" "https://homeseer.com/updates4/linux_4_2_22_94.tar.gz" "--tag spudwebb/homeseer:beta" "${EXTRA_ARGS[@]}"
+build "4.2.22.99" "https://homeseer.com/updates4/linux_4_2_22_99.tar.gz" "--tag spudwebb/homeseer:beta" "${EXTRA_ARGS[@]}"
 
 # latest release build
 build "4.2.22.0" "https://homeseer.com/updates4/linux_4_2_22_0.tar.gz" "--tag spudwebb/homeseer:latest" "${EXTRA_ARGS[@]}"

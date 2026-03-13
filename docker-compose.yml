@@ -1,35 +1,18 @@
-# --------------------------------------------------
-# HOMESEER LINUX SERVER
-# --------------------------------------------------
-# This container hosts the HomeSeer V4 server.
-# This config will create standalone 'homeseer-data'
-# docker volume to store all homeseer runtime
-# files. (logs, config, backups, app files)
-#
-# Disclaimers:
-# --------------
-# This docker container is not supported, sponsored
-# or directly affiliated with Homeseer
-# (https://homeseer.com).
-#
-# --------------------------------------------------
-#    (Developed with ♥ by SavageSoftware, LLC.)
-# --------------------------------------------------
-version: '3.8'
-
-volumes:
-  homeseer-data:
-    name: homeseer-data
+version: '1.0'
 
 services:
   homeseer:
     container_name: homeseer
-    image: homeseer/homeseer:latest
-    hostname: homeseer
+    image: spudwebb/homeseer:latest
+    container_name: homeseer
     restart: unless-stopped
     network_mode: bridge
+    volumes:
+      - /usr/local/homeseer:/homeseer
+      - /var/run/docker.sock:/var/run/docker.sock
     ports:
       - 80:80
+      - 1883:1883
       - 10200:10200
       - 10300:10300
       - 10401:10401
@@ -37,5 +20,5 @@ services:
     environment:
       TZ: America/New_York
       LANG: en_US.UTF-8
-    volumes:
-      - homeseer-data:/homeseer
+      DOCKER_HOMESEER_HOST_ROOT: "/usr/local/homeseer"
+
