@@ -71,13 +71,11 @@ Alternatively you can use a `docker-compose.yml` file to launch your homeseer co
 Below is a sample `docker-compose.yml` file you can use to get started:
 
 ```yaml
-version: '1.0'
-
 services:
   homeseer:
     container_name: homeseer
     image: spudwebb/homeseer:latest
-    container_name: homeseer
+    hostname: homeseer
     restart: unless-stopped
     network_mode: bridge
     volumes:
@@ -98,6 +96,12 @@ services:
 
 Just run the `docker-compose up -d` command in the same directory as your `docker-compose.yml` 
 file to launch the container instance.
+
+If the `latest` homeseer image has been updated and you want to update your homeseer container run:
+```
+docker-compose pull
+docker-compose up -d
+```
 
 ---
 

@@ -1,10 +1,8 @@
-version: '1.0'
-
 services:
   homeseer:
     container_name: homeseer
     image: spudwebb/homeseer:latest
-    container_name: homeseer
+    hostname: homeseer
     restart: unless-stopped
     network_mode: bridge
     volumes:
