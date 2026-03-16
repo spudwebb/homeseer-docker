@@ -38,8 +38,7 @@ build () {
       PLATFORM="linux/amd64"
       OUTPUT="--load"
   elif [ "$MODE" == "push" ]; then
-      #for now we don't build on arm64
-      PLATFORM="linux/amd64,linux/arm64"
+      PLATFORM="linux/amd64,linux/arm64,linux/arm/v7"
       OUTPUT="--push"
   else
       echo "Invalid mode: $MODE. Use 'load' or 'push'."
@@ -65,4 +64,4 @@ build () {
 build "4.2.22.99" "https://homeseer.com/updates4/linux_4_2_22_99.tar.gz" "--tag spudwebb/homeseer:beta" "${EXTRA_ARGS[@]}"
 
 # latest release build
-build "4.2.22.0" "https://homeseer.com/updates4/linux_4_2_22_0.tar.gz" "--tag spudwebb/homeseer:latest" "${EXTRA_ARGS[@]}"
+build "4.2.22.4" "https://homeseer.com/updates4/linux_4_2_22_4.tar.gz" "--tag spudwebb/homeseer:latest" "${EXTRA_ARGS[@]}"

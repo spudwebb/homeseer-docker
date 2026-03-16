@@ -17,17 +17,18 @@ The docker images are published via Docker Hub:
 
 ## TL;DR
 
-Execute the `run.sh` script to start the latest version of HS4 in a docker container 
+Use Docker Compose to start the latest version of HS4 in a docker container 
 ```
-sudo ./run.sh
+sudo docker-compose up -d
 ```
 
 ---
 
 ## Supported Architectures
 
-- ARM 64-bit ( `arm64` )
 - Intel/AMD 64-bit ( `amd64` / `x86_64` )
+- ARM 64-bit ( `arm64` )
+- ARM 32-bit ( `arm/v7` )
 
 ---
 
