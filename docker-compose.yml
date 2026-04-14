@@ -4,6 +4,7 @@ services:
     image: spudwebb/homeseer:latest
     hostname: homeseer
     restart: unless-stopped
+    stop_grace_period: 1m
     network_mode: bridge
     volumes:
       - /usr/local/homeseer:/homeseer
@@ -18,5 +19,8 @@ services:
     environment:
       TZ: America/New_York
       LANG: en_US.UTF-8
+      HOMESEER_CREDENTIALS: "default:default"
       DOCKER_HOMESEER_HOST_ROOT: "/usr/local/homeseer"
+
+
 

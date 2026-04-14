@@ -16,7 +16,7 @@ STOPSIGNAL SIGQUIT
 ENV LANG=en_US.UTF-8
 ENV TZ="America/New_York"
 ENV HOMESEER_FOLDER="/homeseer"
-ENV HOMESEER_CREDENTAILS=""
+ENV HOMESEER_CREDENTIALS=""
 
 # docker container image labels
 LABEL org.label-schema.schema-version="1.0"

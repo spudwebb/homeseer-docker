@@ -19,7 +19,7 @@ The docker images are published via Docker Hub:
 
 Use Docker Compose to start the latest version of HS4 in a docker container 
 ```
-sudo docker-compose up -d
+sudo docker compose up -d
 ```
 
 ---
@@ -78,6 +78,7 @@ services:
     image: spudwebb/homeseer:latest
     hostname: homeseer
     restart: unless-stopped
+	stop_grace_period: 1m
     network_mode: bridge
     volumes:
       - /usr/local/homeseer:/homeseer
@@ -92,17 +93,36 @@ services:
     environment:
       TZ: America/New_York
       LANG: en_US.UTF-8
+      HOMESEER_CREDENTIALS: "default:default"
       DOCKER_HOMESEER_HOST_ROOT: "/usr/local/homeseer"
 ```
 
-Just run the `docker-compose up -d` command in the same directory as your `docker-compose.yml` 
+### Starting the Container
+Run the following command in the same directory as your `docker-compose.yml` 
 file to launch the container instance.
 
+```
+docker compose up -d
+```
+
+
+### Updating the Container
 If the `latest` homeseer image has been updated and you want to update your homeseer container run:
 ```
-docker-compose pull
-docker-compose up -d
+docker compose pull
+docker compose up -d
 ```
+
+### Stopping the Container
+To gracefully stop the HS4 container use:
+```
+docker compose stop
+```
+If *"No Password Required for Local (same subnet) Login"* is **disabled** in the HS4 network settings, you must provide valid credentials in order for HS4 to shutdown gracefully:
+
+```
+HOMESEER_CREDENTIALS: "username:password"
+``` 
 
 ---
 
