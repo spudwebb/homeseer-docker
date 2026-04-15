@@ -5,6 +5,7 @@ FROM debian:trixie-slim
 
 # build arguments
 ARG TARGETARCH
+ARG TARGETVARIANT
 ARG BUILDDATE
 ARG VERSION
 ARG DEBIAN_FRONTEND=noninteractive
@@ -27,9 +28,9 @@ LABEL org.label-schema.vcs-url="https://github.com/spudwebb/homeseer-docker"
 LABEL org.label-schema.vendor="HomeSeer Technologies"
 LABEL org.label-schema.version=$VERSION
 
-RUN echo "=========================================================" && \
-    echo "  BUILDING DOCKER HOMESEER BASE ($VERSION) IMAGE FOR: $TARGETARCH" && \
-    echo "========================================================="
+RUN echo "================================================================" && \
+    echo "  BUILDING DOCKER HOMESEER BASE ($VERSION) IMAGE FOR: $TARGETARCH $TARGETVARIANT" && \
+    echo "================================================================"
 
 # Replace sudo with a passthrough wrapper
 RUN echo '#!/bin/sh\nexec "$@"' > /usr/bin/sudo && \
@@ -70,7 +71,6 @@ else \
     echo "Non-ARMv7 - full Mono install"; \
     apt-get install --yes mono-complete mono-devel mono-vbnc mono-xsp4 referenceassemblies-pcl ca-certificates-mono; \
 fi && \
-    apt-get install --yes  mono-complete mono-devel mono-vbnc mono-xsp4 referenceassemblies-pcl ca-certificates-mono && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/*
 
 # install HomeSeer dependencies
