@@ -28,7 +28,6 @@ sudo docker compose up -d
 
 - Intel/AMD 64-bit ( `amd64` / `x86_64` )
 - ARM 64-bit ( `arm64` )
-- ARM 32-bit ( `arm/v7` )
 
 ---
 
