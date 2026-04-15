@@ -1,7 +1,7 @@
 #########################################
 # HOMESEER (V4) LINUX - DOCKERFILE
 #########################################
-FROM mono:6.12.0
+FROM debian:trixie-slim
 
 # build arguments
 ARG TARGETARCH
@@ -31,54 +31,48 @@ LABEL org.label-schema.version=$VERSION
 RUN echo "=========================================================" && \
     echo "  BUILDING DOCKER HOMESEER BASE ($VERSION) IMAGE FOR: $TARGETARCH" && \
     echo "========================================================="
-	
+
 # Replace sudo with a passthrough wrapper
 RUN echo '#!/bin/sh\nexec "$@"' > /usr/bin/sudo && \
     chmod +x /usr/bin/sudo
-	
-# Fix Debian Buster EOL repo issues- .186 of mono
-RUN sed -i 's/deb.debian.org/archive.debian.org/g' /etc/apt/sources.list && \
-    sed -i 's|security.debian.org|archive.debian.org/debian-security|g' /etc/apt/sources.list && \
-    sed -i '/stretch-updates/d' /etc/apt/sources.list && \
-    sed -i '/buster-updates/d' /etc/apt/sources.list
-
-# make sure APT packages are up to date
-RUN apt-get update && apt-get upgrade --yes
 
 # set non-interactive frontend
 RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
 
 # update locale/language
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y locales
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y locales && \
+	rm -rf /var/lib/apt/lists/*
 RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
     dpkg-reconfigure --frontend=noninteractive locales && \
     update-locale LANG=en_US.UTF-8
 
 # install container tools
-RUN apt-get install --yes tmux curl wget nano apt-utils net-tools iputils-ping etherwake ssh-client mosquitto-clients dos2unix ca-certificates gnupg
+RUN apt-get update && \
+    apt-get install --yes tmux curl wget nano apt-utils net-tools iputils-ping etherwake ssh-client mosquitto-clients dos2unix dirmngr ca-certificates gnupg binutils docker-cli && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# install docker-ce-cli
-RUN install -m 0755 -d /etc/apt/keyrings && \
-    curl -fsSL https://download.docker.com/linux/debian/gpg \
-      | gpg --dearmor -o /etc/apt/keyrings/docker.gpg && \
-    echo \
-      "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] \
-      https://download.docker.com/linux/debian \
-      buster stable" \
-      > /etc/apt/sources.list.d/docker.list
-
-RUN apt-get update && apt-get install -y docker-ce-cli
+# install mono
+RUN rm -f /usr/share/keyrings/mono-official-archive-keyring.gpg && \
+    gpg --homedir /tmp --no-default-keyring --keyring gnupg-ring:/usr/share/keyrings/mono-official-archive-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF && \
+    chmod +r /usr/share/keyrings/mono-official-archive-keyring.gpg && \
+    echo "deb [signed-by=/usr/share/keyrings/mono-official-archive-keyring.gpg] https://download.mono-project.com/repo/debian stable-trixie main" > /etc/apt/sources.list.d/mono-official-stable.list && \
+# trixie no longer allows mono-project's obsolete signature verification, the following bypass the check
+# https://neilzone.co.uk/2026/01/dealing-with-apts-warning-policy-will-reject-signature-within-a-year-see-audit-for-details/
+    mkdir -p /etc/apt/apt.conf.d && \
+    install -p -m 644 etc/apt/apt.conf.d/25keypolicy /etc/apt/apt.conf.d/ && \
+    apt-get update && \
+    apt-get install --yes  mono-complete mono-devel mono-vbnc mono-xsp4 referenceassemblies-pcl ca-certificates-mono && \
+    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/*
 
 # install HomeSeer dependencies
 # alsa-base (not available in Debian upstream)
-RUN apt-get install --yes aha ffmpeg alsa-utils tmux curl wget nano flite chromium \
+RUN apt-get update && \
+    apt-get install --yes aha ffmpeg alsa-utils flite \
                           avahi-discover libavahi-compat-libdnssd-dev libnss-mdns  \
-                          avahi-daemon avahi-utils mdns-scan mono-complete         \
-                          mono-devel mono-vbnc mono-xsp4 && \
-    apt-get remove --yes brltty
-
-# clean APT cache
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+                          avahi-daemon avahi-utils mdns-scan && \
+    apt-get remove --yes brltty && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # copy container homeseer override scripts
 COPY homeseer/*.sh    /scripts/

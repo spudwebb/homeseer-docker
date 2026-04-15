@@ -6,7 +6,7 @@
 
 
 # docker image version
-VERSION="2.0"
+VERSION="3.0"
 
 echo
 echo "**********************************************************************"
@@ -23,7 +23,8 @@ docker buildx create --driver-opt env.BUILDKIT_STEP_LOG_MAX_SIZE=10485760   \
 docker buildx build \
   --build-arg BUILDDATE="$(date -u +'%Y-%m-%dT%H:%M:%SZ')" \
   --build-arg VERSION="$VERSION" \
-  --platform linux/amd64,linux/arm64,linux/arm/v7 \
+  #--platform linux/amd64,linux/arm64,linux/arm/v7 
+  --platform linux/amd64 \
   --push \
   --tag spudwebb/homeseer-base:$VERSION \
   --tag spudwebb/homeseer-base:latest \
