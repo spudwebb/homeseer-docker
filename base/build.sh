@@ -21,7 +21,7 @@ docker buildx create --driver-opt env.BUILDKIT_STEP_LOG_MAX_SIZE=10485760   \
 
 # perform multi-arch platform image builds; push the resulting image to the DockerHub repository
 docker buildx build \
-  --progress=plain
+  --progress=plain \
   --build-arg BUILDDATE="$(date -u +'%Y-%m-%dT%H:%M:%SZ')" \
   --build-arg VERSION="$VERSION" \
   --platform linux/amd64,linux/arm64,linux/arm/v7 \
