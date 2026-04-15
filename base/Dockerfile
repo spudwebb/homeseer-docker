@@ -53,12 +53,12 @@ RUN apt-get update && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # install mono
+# trixie no longer allows mono-project's obsolete signature verification, 25keypolicy file is used to bypass the check
+# https://neilzone.co.uk/2026/01/dealing-with-apts-warning-policy-will-reject-signature-within-a-year-see-audit-for-details/
 RUN rm -f /usr/share/keyrings/mono-official-archive-keyring.gpg && \
     gpg --homedir /tmp --no-default-keyring --keyring gnupg-ring:/usr/share/keyrings/mono-official-archive-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF && \
     chmod +r /usr/share/keyrings/mono-official-archive-keyring.gpg && \
     echo "deb [signed-by=/usr/share/keyrings/mono-official-archive-keyring.gpg] https://download.mono-project.com/repo/debian stable-trixie main" > /etc/apt/sources.list.d/mono-official-stable.list && \
-# trixie no longer allows mono-project's obsolete signature verification, the following bypass the check
-# https://neilzone.co.uk/2026/01/dealing-with-apts-warning-policy-will-reject-signature-within-a-year-see-audit-for-details/
     mkdir -p /etc/apt/apt.conf.d && \
     install -p -m 644 etc/apt/apt.conf.d/25keypolicy /etc/apt/apt.conf.d/ && \
     apt-get update && \
