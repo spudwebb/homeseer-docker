@@ -1,7 +1,7 @@
 #########################################
 # HOMESEER (V4) LINUX - DOCKERFILE
 #########################################
-FROM debian:trixie-slim
+FROM debian:bookworm-slim
 
 # build arguments
 ARG TARGETARCH
@@ -64,13 +64,7 @@ RUN rm -f /usr/share/keyrings/mono-official-archive-keyring.gpg && \
     chmod +r /usr/share/keyrings/mono-official-archive-keyring.gpg && \
     echo "deb [signed-by=/usr/share/keyrings/mono-official-archive-keyring.gpg] https://download.mono-project.com/repo/debian stable-buster main" > /etc/apt/sources.list.d/mono-official-stable.list && \
     apt-get update && \
-if [ "$TARGETARCH" = "arm" ] && [ "$TARGETVARIANT" = "v7" ]; then \
-    echo "ARMv7 detected - minimal Mono install"; \
-    apt-get install --yes --no-install-recommends mono-complete mono-vbnc referenceassemblies-pcl ca-certificates-mono; \
-else \
-    echo "Non-ARMv7 - full Mono install"; \
-    apt-get install --yes mono-complete mono-devel mono-vbnc mono-xsp4 referenceassemblies-pcl ca-certificates-mono; \
-fi && \
+    apt-get install --yes mono-complete mono-devel mono-vbnc mono-xsp4 referenceassemblies-pcl ca-certificates-mono && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/*
 
 # install HomeSeer dependencies
