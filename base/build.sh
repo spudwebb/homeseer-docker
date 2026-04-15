@@ -25,7 +25,7 @@ docker buildx build \
   --progress=plain \
   --build-arg BUILDDATE="$(date -u +'%Y-%m-%dT%H:%M:%SZ')" \
   --build-arg VERSION="$VERSION" \
-  --platform linux/arm/v7 \
+  --platform linux/amd64,linux/arm64 \
   --push \
   --tag spudwebb/homeseer-base:$VERSION \
   --tag spudwebb/homeseer-base:latest \

@@ -1,7 +1,7 @@
 #########################################
 # HOMESEER (V4) LINUX - DOCKERFILE
 #########################################
-FROM debian:bookworm-slim
+FROM debian:trixie-slim
 
 # build arguments
 ARG TARGETARCH
