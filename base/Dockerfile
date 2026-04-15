@@ -62,7 +62,7 @@ COPY --chmod=644 etc/apt/apt.conf.d/25keypolicy /etc/apt/apt.conf.d/
 RUN rm -f /usr/share/keyrings/mono-official-archive-keyring.gpg && \
     gpg --homedir /tmp --no-default-keyring --keyring gnupg-ring:/usr/share/keyrings/mono-official-archive-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF && \
     chmod +r /usr/share/keyrings/mono-official-archive-keyring.gpg && \
-    echo "deb [signed-by=/usr/share/keyrings/mono-official-archive-keyring.gpg] https://download.mono-project.com/repo/debian stable-trixie main" > /etc/apt/sources.list.d/mono-official-stable.list && \
+    echo "deb [signed-by=/usr/share/keyrings/mono-official-archive-keyring.gpg] https://download.mono-project.com/repo/debian stable-buster main" > /etc/apt/sources.list.d/mono-official-stable.list && \
     apt-get update && \
     apt-get install --yes  mono-complete mono-devel mono-vbnc mono-xsp4 referenceassemblies-pcl ca-certificates-mono && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/*
